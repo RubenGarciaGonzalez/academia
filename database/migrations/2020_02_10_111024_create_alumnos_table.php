@@ -18,7 +18,7 @@ class CreateAlumnosTable extends Migration
             $table->string('nombre');
             $table->string('apellidos');
             $table->string('mail')->unique();
-            $table->string('logo')->default('')
+            $table->string('logo')->default('img/logo/default.jpg');
             $table->timestamps();
         });
     }
