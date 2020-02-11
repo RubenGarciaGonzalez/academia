@@ -11,7 +11,7 @@ class Modulo extends Model
     //Métodos para la relación N:M con Alumnos
     public function alumnos()
     {
-        return $this->belongsToMany('App\Alumno')->withPivot('nota');
+        return $this->belongsToMany('App\Alumno')->withPivot('nota')->withTimestamps();
     }
 
 }

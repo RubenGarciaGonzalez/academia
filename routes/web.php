@@ -12,5 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::get('alumnos/{alumno}/fmatricula', 'AlumnoController@fmatricula')->name('alumnos.fmatricula');
+
+//Cargamos los resources
+Route::resource('alumnos', 'AlumnoController');
+Route::resource('modulos', 'ModuloController');
+
+

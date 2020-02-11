@@ -10,6 +10,6 @@ class Alumno extends Model
 
     public function modulos()
     {
-        return $this->belongsToMany('App\Modulo')->withPivot('nota');
+        return $this->belongsToMany('App\Modulo')->withPivot('nota')->withTimestamps();
     }
 }
