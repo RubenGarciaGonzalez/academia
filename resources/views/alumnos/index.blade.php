@@ -32,7 +32,14 @@
                     <td class="align-middle">
                         <img src="{{asset($alumno->logo)}}" width="80px" height="80px" class="img-fluid rounded-circle">
                     </td>
-                    <td class="align-middle">#</td>
+                    <td class="align-middle">
+                    <form class="form-inline" name="del" action="{{route('alumnos.destroy', $alumno)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Borrar Alumno?')" class="btn btn-danger fa fa-trash fa-2x"></button>
+                        <a href="{{route('alumnos.edit', $alumno)}}" class="btn btn-warning fa fa-edit fa-2x ml-3"></a>
+                    </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

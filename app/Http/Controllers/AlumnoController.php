@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Alumno;
 use App\Modulo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
@@ -26,7 +27,7 @@ class AlumnoController extends Controller
      */
     public function create()
     {
-        //
+        return view ('alumnos.create');
     }
 
     /**
@@ -37,7 +38,37 @@ class AlumnoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validaciones genericas
+        $request->validate([
+            'nombre'=>['required'],
+            'apellidos'=>['required'],
+            'mail'=>['required', 'unique:alumnos,mail', "email:rfc,dns"]
+        ]);
+
+        //Cojo los datos poque voy a modificar el request. Voy a poner en 
+        // nombre y apellidos la primera letra en mayusculas
+        $alumno=new Alumno();
+        $alumno->nombre=ucwords($request->nombre);
+        $alumno->apellidos=ucwords($request->apellidos);
+        $alumno->mail=$request->mail;
+
+        //Comprobamos si hemos subido un logo
+        if ($request->has('logo')) {
+
+            $request->validate=([
+                'logo'=>['image']
+            ]);
+
+            $file = $request->file('logo');
+            $nom = 'logo/'.time().'_'.$file->getClientOriginalName();
+            //Guardamos el fichero en public
+            Storage::disk('public')->put($nom, \File::get($file));
+            //Le damos a alumno el nombre que le hemos puesto al fichero
+            $alumno->logo="img/$nom";
+        }
+            //Guardamos el fichero
+            $alumno->save();
+            return redirect()->route('alumnos.index')->with('mensaje', 'Alumno Guardado');
     }
 
     /**

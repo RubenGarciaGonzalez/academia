@@ -22,5 +22,5 @@ Route::resource('alumnos', 'AlumnoController');
 Route::resource('modulos', 'ModuloController');
 
 //Los post debajo de los resources
-Route::post('alumnos', 'AlumnoController@calificar')->name('alumnos.calificar');
+Route::post('alumnos2', 'AlumnoController@calificar')->name('alumnos.calificar');
 Route::post('alumnos1', 'AlumnoController@matricular')->name('alumnos.matricular');
