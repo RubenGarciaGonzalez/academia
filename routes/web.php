@@ -16,9 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('alumnos/{alumno}/fmatricula', 'AlumnoController@fmatricula')->name('alumnos.fmatricula');
-
+Route::get('alumnos/{alumno}/fcalificar', 'AlumnoController@fcalificar')->name('alumnos.fcalificar');
 //Cargamos los resources
 Route::resource('alumnos', 'AlumnoController');
 Route::resource('modulos', 'ModuloController');
 
-
+//Los post debajo de los resources
+Route::post('alumnos', 'AlumnoController@calificar')->name('alumnos.calificar');
+Route::post('alumnos1', 'AlumnoController@matricular')->name('alumnos.matricular');

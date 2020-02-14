@@ -9,7 +9,7 @@
 @if ($text=Session::get('mensaje'))
     <p class="alert alert-danger my-3">{{$text}}</p>
 @endif
-<a href="{{route('alumnos.create')}}" class="btn btn-info mb-3">Crear Alumno</a>
+<a href="{{route('alumnos.create')}}" class="btn btn-info mb-3"><i class="fa fa-plus mr-2"></i>Crear Alumno</a>
     <table class="table table-striped table-dark">
         <thead>
         <tr>
@@ -24,8 +24,7 @@
             @foreach ($alumnos as $alumno)
                 <tr>
                     <th scope="row">
-                        <a href="{{route('alumnos.show', $alumno)}}" style="text-decoration:none">
-                            <i class="fa fa-address-card fa-3x"></i>
+                        <a href="{{route('alumnos.show', $alumno)}}" class="btn btn-primary fa fa-address-card fa-3x ">
                         </a>
                     </th>
                     <td class="align-middle">{{$alumno->apellidos.', '.$alumno->nombre}}</td>
