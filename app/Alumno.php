@@ -20,4 +20,21 @@ class Alumno extends Model
         $modulos2=Modulo::whereNotIn('id', $modulos1)->get();
         return $modulos2;
     }
+    
+    public function notaMedia(){
+        $suma = 0;
+        $total=$this->modulos->count();
+        if ($total>0) {
+            foreach ($this->modulos as $modulo) {
+                $nota=$modulo->pivot->nota;
+                $suma+=$nota;
+            }
+            return round(($suma/$total), 2);
+        }
+
+        return "Sin Modulos";
+    }
+    
+
+
 }

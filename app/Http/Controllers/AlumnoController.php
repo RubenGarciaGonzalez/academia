@@ -6,6 +6,7 @@ use App\Alumno;
 use App\Modulo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Http\Requests\AlumnoRequest;
 
 class AlumnoController extends Controller
 {
@@ -36,30 +37,21 @@ class AlumnoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AlumnoRequest $request)
     {
-        //Validaciones genericas
-        $request->validate([
-            'nombre'=>['required'],
-            'apellidos'=>['required'],
-            'mail'=>['required', 'unique:alumnos,mail', "email:rfc,dns"]
-        ]);
-
+        $datos = $request->validated();
+        //dd($datos);
         //Cojo los datos poque voy a modificar el request. Voy a poner en 
         // nombre y apellidos la primera letra en mayusculas
         $alumno=new Alumno();
-        $alumno->nombre=ucwords($request->nombre);
-        $alumno->apellidos=ucwords($request->apellidos);
-        $alumno->mail=$request->mail;
+        $alumno->nombre=ucwords($datos['nombre']);
+        $alumno->apellidos=ucwords($datos['apellidos']);
+        $alumno->mail=$datos['mail'];
 
         //Comprobamos si hemos subido un logo
-        if ($request->has('logo')) {
+        if ($datos['logo']!=null) {
 
-            $request->validate=([
-                'logo'=>['image']
-            ]);
-
-            $file = $request->file('logo');
+            $file = $datos['logo'];
             $nom = 'logo/'.time().'_'.$file->getClientOriginalName();
             //Guardamos el fichero en public
             Storage::disk('public')->put($nom, \File::get($file));
@@ -141,7 +133,7 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        //
+        return view('alumnos.edit', compact('alumno'));
     }
 
     /**
@@ -153,7 +145,38 @@ class AlumnoController extends Controller
      */
     public function update(Request $request, Alumno $alumno)
     {
-        //
+        $request->validate([
+            'nombre'=>['required'],
+            'apellidos'=>['required'],
+            'mail'=>['required', 'unique:alumnos,mail,'.$alumno->id, "email:rfc,dns"]
+        ]);
+
+        $alumno->nombre=ucwords($request->nombre);
+        $alumno->apellidos=ucwords($request->apellidos);
+        $alumno->mail=$request->mail;
+        //Comprobamos si hemos subido un logo
+        if ($request->has('logo')) {
+
+            $request->validate=([
+                'logo'=>['image']
+            ]);
+
+            $file = $request->file('logo');
+            $nom = 'logo/'.time().'_'.$file->getClientOriginalName();
+            //Guardamos el fichero en public
+            Storage::disk('public')->put($nom, \File::get($file));
+            //Le damos a alumno el nombre que le hemos puesto al fichero
+            $imagenOld = $alumno->logo;
+            if (basename($imagenOld)!="default.jpg") {
+                unlink($imagenOld);
+            }
+            $alumno->update($request->all());
+            $alumno->update(['logo'=>"img/$nom"]);
+        }else{
+            $alumno->update($request->all());
+        }
+            //Guardamos el fichero
+            return redirect()->route('alumnos.index')->with('mensaje', 'Alumno Modificado');
     }
 
     /**
@@ -164,6 +187,12 @@ class AlumnoController extends Controller
      */
     public function destroy(Alumno $alumno)
     {
-        //
+        //Tener cuidado de borrar las imagenes salvo default.jpg
+        $logo=$alumno->logo;
+        if (basename($logo)!="default.jpg") {
+            unlink($logo);
+        }
+        $alumno->delete();
+        return redirect()->route('alumnos.index')->with('mensaje', 'Alumno borrado correctamente');
     }
 }

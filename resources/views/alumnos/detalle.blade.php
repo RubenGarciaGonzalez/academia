@@ -26,6 +26,14 @@
                 </ul>
             </p>
             </p>
+            <p class="card-text">
+                <p>Nota Media de {{$alumno->nombre}}</p>
+                <ul>
+                @if ($alumno->notaMedia()!="Sin nota")
+                    <li>{{$alumno->notaMedia()}}</li>
+                @endif
+                </ul>
+            </p>
             <a href="{{route('alumnos.index')}}" class="float-right btn btn-success my-3">Volver</a>
             <a href="{{route('alumnos.fmatricula', $alumno)}}" class="btn btn-primary float-right mr-3 my-3">Matricular Alumno</a>
             <a href="{{route('alumnos.fcalificar', $alumno)}}" class="btn btn-danger float-right mr-3 my-3">Calificar Alumno</a>            

@@ -14,7 +14,8 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        //
+        $modulos = Modulo::orderBy('nombre')->paginate(3);
+        return view('modulos.index', compact('modulos'));
     }
 
     /**
