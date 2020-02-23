@@ -10,6 +10,7 @@
     <p class="alert alert-danger my-3">{{$text}}</p>
 @endif
 <a href="{{route('modulos.create')}}" class="btn btn-info mb-3"><i class="fa fa-plus mr-2"></i>Crear Módulo</a>
+<a href="{{route('alumnos.index')}}" class="btn btn-danger mb-3 float-right"><i class="fa fa-undo mr-2"></i>Ir a Alumnos</a>
     <table class="table table-striped table-dark">
         <thead>
         <tr>

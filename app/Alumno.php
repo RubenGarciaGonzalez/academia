@@ -34,6 +34,17 @@ class Alumno extends Model
 
         return "Sin Modulos";
     }
+
+    // public function scopeModulo($query, $v){
+    //     if (!isset($v)) {
+    //         return $query->where('modulo', 'like', '%');
+    //     }
+    //     if ($v=='%') {
+    //         return $query->where('modulo', 'like', $v);
+    //     }
+    //     return $query->where('modulo', $v);
+        
+    // }
     
 
 

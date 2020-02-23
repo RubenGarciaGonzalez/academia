@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Modulo;
 use Illuminate\Http\Request;
+use App\Http\Requests\ModuloRequest;
 
 class ModuloController extends Controller
 {
@@ -25,7 +26,7 @@ class ModuloController extends Controller
      */
     public function create()
     {
-        //
+        return view('modulos.create');
     }
 
     /**
@@ -34,9 +35,14 @@ class ModuloController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ModuloRequest $request)
     {
-        //
+        $datos = $request->validated();
+        $modulo = new Modulo();
+        $modulo->nombre=ucwords($datos['nombre']);
+        $modulo->horas=$datos['horas'];
+        $modulo->save();
+        return redirect()->route('modulos.index')->with('mensaje', 'Módulo creado correctamente');
     }
 
     /**
@@ -47,7 +53,7 @@ class ModuloController extends Controller
      */
     public function show(Modulo $modulo)
     {
-        //
+        return view('modulos.detalle', compact('modulo'));
     }
 
     /**
@@ -58,7 +64,7 @@ class ModuloController extends Controller
      */
     public function edit(Modulo $modulo)
     {
-        //
+        return view('modulos.edit', compact('modulo'));
     }
 
     /**
@@ -68,9 +74,13 @@ class ModuloController extends Controller
      * @param  \App\Modulo  $modulo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Modulo $modulo)
+    public function update(ModuloRequest $request, Modulo $modulo)
     {
-        //
+        $datos = $request->validated();
+        $modulo->nombre=ucwords($datos['nombre']);
+        $modulo->horas=$datos['horas'];
+        $modulo->update($request->all());
+        return redirect()->route('modulos.index')->with('mensaje', 'Módulo modificado correctamente!');
     }
 
     /**
@@ -81,6 +91,7 @@ class ModuloController extends Controller
      */
     public function destroy(Modulo $modulo)
     {
-        //
+        $modulo->delete();
+        return redirect()->route('modulos.index')->with('mensaje', 'Módulo borrado correctamente');
     }
 }

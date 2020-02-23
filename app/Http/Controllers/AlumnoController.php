@@ -15,10 +15,16 @@ class AlumnoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $alumnos = Alumno::orderBy('apellidos')->paginate(5);
-        return view('alumnos.index', compact('alumnos'));
+        // $modulos=Modulo::get('nombre');
+
+        
+
+        $alumnos = Alumno::orderBy('apellidos')
+        // ->modulo($modulos)
+        ->paginate(5);
+        return view('alumnos.index', compact('alumnos', 'request'));
     }
 
     /**

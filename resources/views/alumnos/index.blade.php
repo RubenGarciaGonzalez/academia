@@ -9,7 +9,25 @@
 @if ($text=Session::get('mensaje'))
     <p class="alert alert-danger my-3">{{$text}}</p>
 @endif
-<a href="{{route('alumnos.create')}}" class="btn btn-info mb-3"><i class="fa fa-plus mr-2"></i>Crear Alumno</a>
+<div class="container">
+    <a href="{{route('alumnos.create')}}" class="btn btn-info mb-3"><i class="fa fa-plus mr-2"></i>Crear Alumno</a>
+    <a href="{{route('modulos.index')}}" class="btn btn-danger mb-3 float-right"><i class="fa fa-undo mr-2"></i>Ir a Módulos</a>
+    {{-- <form name="search" method="get" action="{{route('alumnos.index')}}" class="form-inline float-right">
+        <i class="fa fa-search fa-2x ml-2 mr-2" aria-hidden="true"></i>
+        <label for="modulos" class="mr-2">Modulo</label>
+        <select name='modulo' class='form-control mr-2' onchange="this.form.submit()">
+          <option value='%'>Todos</option>
+          @foreach($modulos as $modulo)
+            @if($modulo==$request->modulo)
+              <option selected>{{$modulo->nombre}}</option>
+            
+            @else
+              <option >{{$modulo->nombre}}</option>
+            @endif
+          @endforeach
+        </select> 
+    </form> --}}
+</div>
     <table class="table table-striped table-dark">
         <thead>
         <tr>
@@ -44,5 +62,5 @@
             @endforeach
         </tbody>
     </table>
-    {{$alumnos->links()}}
+    {{$alumnos->appends(Request::except('page'))->links()}}
 @endsection
